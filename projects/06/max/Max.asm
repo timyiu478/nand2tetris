@@ -1,0 +1,19 @@
+   @R0
+   D=M
+   @R1
+   D=D-M
+   @ITSR0
+   D;JGT
+   @R1
+   D=M
+   @SET_RESULT
+   0;JMP
+(ITSR0)
+   @R0             
+   D=M
+(SET_RESULT)
+   @R2
+   M=D
+(END)
+   @END
+   0;JMP
