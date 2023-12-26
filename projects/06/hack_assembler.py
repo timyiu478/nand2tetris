@@ -1,4 +1,4 @@
-from lib import parser, code, instruction_type, symbol_table
+from modules import parser, code, instruction_type, symbol_table
 import sys
 import re
 
