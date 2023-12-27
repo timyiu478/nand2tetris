@@ -4,7 +4,7 @@ import sys
 
 commandType = command_type.CommandType
 
-class VMTranslater:
+class VMTranslator:
 
   def __init__(self, vmFileName):
     self.parser = parser.Parser(vmFileName)
@@ -30,5 +30,5 @@ class VMTranslater:
     self.codeWriter.close()
 
 if __name__ == "__main__":
-  vmTranslater = VMTranslater(sys.argv[1])    
-  vmTranslater.translate()
+  vmTranslator = VMTranslator(sys.argv[1])    
+  vmTranslator.translate()
