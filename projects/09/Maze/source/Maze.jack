@@ -1,0 +1,168 @@
+class Maze {
+  field int screenHeight;
+  field int screenWeight;
+  field int height;
+  field int weight;
+  field int numberOfRows;
+  field int numberOfCols;
+  field Array grid;
+
+  constructor Maze new(int AscreenHeight, int AscreenWeight, int Aheight, int Aweight) {
+    var int row, col, i;
+    var Cell cell;
+
+    let height = Aheight;
+    let weight = Aweight;
+    let numberOfRows = AscreenHeight / height;
+    let numberOfCols = AscreenWeight / weight;
+
+    let grid = Array.new(numberOfRows * numberOfCols);
+    
+    let row=0;
+    let i=0;
+    while (row < numberOfRows) {
+      let col=0;
+      while (col < numberOfCols) {
+        let cell = Cell.new(row, col, height, weight, grid, numberOfRows, numberOfCols); 
+        let grid[i] = cell;
+        let col = col + 1;
+        let i = i + 1;
+      }
+      let row = row + 1;
+    }
+    return this;
+  }
+  
+  method void drawWalls() {
+    var int i;
+    var Cell cell, next;
+
+    let i=0;
+    while (i < (numberOfRows * numberOfCols)) {
+      let cell = grid[i];
+      do cell.draw();
+      let i = i + 1;
+    }
+
+    return;
+  }
+
+  method void draw(int startIndex) {
+    var int i, cellIndex, nextIndex, stackPointer;
+    var Cell cell, next;
+    var Array stack;
+
+    do drawAllBlack();
+    do drawWalls();
+
+    let stackPointer = 0;
+    let stack = Array.new(numberOfRows * numberOfCols);
+    let cell = grid[startIndex];
+    do cell.setVisited(true);
+
+    while (stackPointer > -1) {
+      let nextIndex = cell.checkNeighbors();
+      if (~(nextIndex = -1)) {
+        let next = grid[nextIndex];
+        do next.setVisited(true);
+        do removeWalls(cellIndex, nextIndex);
+        let stack[stackPointer] = cellIndex;
+        let stackPointer = stackPointer + 1;
+        let cell = next;
+        let cellIndex = nextIndex;
+        do cell.setVisited(true);
+      } else {
+        let stackPointer = stackPointer - 1;
+        if (stackPointer > -1) { 
+          let cellIndex = stack[stackPointer]; 
+          let cell = grid[cellIndex];
+        }
+      }
+    }
+     
+    do stack.dispose();
+
+    return;
+  }
+
+  method void drawAllBlack() {
+    do Screen.setColor(true);
+    do Screen.drawRectangle(0,0,511,255);
+    return;
+  }
+
+  method void resetMaze() {
+    var int i;
+    var Cell cell;
+    let i = 0;
+    while (i < (numberOfRows * numberOfCols)) {
+      let cell = grid[i];
+      do cell.setWall(0, 1);
+      do cell.setWall(1, 1);
+      do cell.setWall(2, 1);
+      do cell.setWall(3, 1);
+      do cell.setVisited(false);
+      let i = i + 1;
+    }
+
+    return;
+  }
+  
+  method void removeWalls(int cellIndex, int nextCellIndex) {
+    var Cell current, next;
+    var int currentX, currentY, nextX, nextY;
+
+    let current = grid[cellIndex];
+    let next = grid[nextCellIndex];
+
+    let currentX = current.getX();
+    let currentY = current.getY();
+    let nextX = next.getX();
+    let nextY = next.getY();
+
+    if ((nextX - currentX) = 1) {
+      do current.setWall(1, 0);
+      do next.setWall(3, 0);
+    } else {
+      do current.setWall(3, 0);
+      do next.setWall(1, 0);
+    }
+    if ((nextY - currentY) = 1) {
+      do current.setWall(2, 0);
+      do next.setWall(0, 0);
+    } else {
+      do current.setWall(0, 0);
+      do next.setWall(2, 0);
+    }
+
+    do current.draw();
+    do next.draw();
+
+    return;
+  }
+
+  method void dispose() {
+    var int i;
+    var Cell cell;
+
+    let i = 0;
+    while (i < (numberOfRows * numberOfCols)) {
+      let cell = grid[i];
+      do cell.dispose();
+      let i = i + 1;
+    }
+
+    do grid.dispose();
+    do Memory.deAlloc(this);
+
+    return;
+  }
+  
+  method int getNumberOfRows() {
+    return numberOfRows;
+  } 
+   
+  method int getNumberOfCols() {
+    return numberOfCols;
+  } 
+}

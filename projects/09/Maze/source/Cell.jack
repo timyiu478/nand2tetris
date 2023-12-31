@@ -1,0 +1,139 @@
+class Cell {
+  field int x;
+  field int y;
+  field int x1;
+  field int x2;
+  field int y1;
+  field int y2;
+  field int numberOfRows;
+  field int numberOfCols;
+  field int y2;
+  field boolean visited;
+  field Array walls;
+  field Array neighbours;
+  field Grid grid;
+
+  constructor Cell new(int Arow, int Acol, int Aheight, int Aweight, Array Agrid, int AnumberOfRows, int AnumberOfCols) {
+    let x = Acol;
+    let y = Arow;
+    let y1 = Arow * Aheight;
+    let x1 = Acol * Aweight;
+    let y2 = ((Arow + 1) * Aheight) - 1;
+    let x2 = ((Acol + 1) * Aweight) - 1;
+    let visited = false;
+    let walls = Array.new(4);
+    let neighbours = Array.new(4);
+    let walls[0] = 1; // top wall
+    let walls[1] = 1; // right wall
+    let walls[2] = 1; // down wall
+    let walls[3] = 1; // left wall
+    let grid = Agrid;
+    let numberOfRows = AnumberOfRows;
+    let numberOfCols = AnumberOfCols;
+    return this;
+  }
+
+  method void dispose() {
+    do walls.dispose();
+    do neighbours.dispose();
+    do Memory.deAlloc(this);
+    return;
+  }
+
+  method void draw() {
+    if (walls[0] = 1) { do Screen.setColor(false); } else { do Screen.setColor(true); }
+    do Screen.drawLine(x1, y1, x2, y1);
+    if (walls[1] = 1) { do Screen.setColor(false); } else { do Screen.setColor(true); }
+    do Screen.drawLine(x2, y1, x2, y2);
+    if (walls[2] = 1) { do Screen.setColor(false); } else { do Screen.setColor(true); }
+    do Screen.drawLine(x1, y2, x2, y2);
+    if (walls[3] = 1) { do Screen.setColor(false); } else { do Screen.setColor(true); }
+    do Screen.drawLine(x1, y1, x1, y2);
+    return;
+  }
+  
+  method int checkNeighbors() {
+    var Cell top, right, bottom, left, cell;
+    var int topIndex, leftIndex, bottomIndex, rightIndex, cellIndex;
+    var int neighboursIndex;
+    var int randIndex;
+    var boolean visited;
+
+    let topIndex = getIndexFrom2Dto1D(x, y-1);
+    let rightIndex = getIndexFrom2Dto1D(x+1, y);
+    let bottomIndex = getIndexFrom2Dto1D(x, y+1);
+    let leftIndex = getIndexFrom2Dto1D(x-1, y);
+
+    let neighboursIndex = -1;
+
+    if (~(topIndex = -1)) { 
+      let top = grid[topIndex]; 
+      let visited = top.getVisited();
+      if (~visited) {
+        let neighboursIndex = neighboursIndex + 1;
+        let neighbours[neighboursIndex] = topIndex;
+      }
+    }
+    if (~(rightIndex = -1)) { 
+      let right = grid[rightIndex]; 
+      let visited = right.getVisited();
+      if (~visited) {
+        let neighboursIndex = neighboursIndex + 1;
+        let neighbours[neighboursIndex] = rightIndex;
+      }
+    }
+    if (~(bottomIndex = -1)) { 
+      let bottom = grid[bottomIndex]; 
+      let visited = bottom.getVisited();
+      if (~visited) {
+        let neighboursIndex = neighboursIndex + 1;
+        let neighbours[neighboursIndex] = bottomIndex;
+      }
+    }
+    if (~(leftIndex = -1)) { 
+      let left = grid[leftIndex]; 
+      let visited = left.getVisited();
+      if (~visited) {
+        let neighboursIndex = neighboursIndex + 1;
+        let neighbours[neighboursIndex] = leftIndex;
+      }
+    }
+    if (neighboursIndex < 0) { return -1; }
+
+    let randIndex = Random.randInt(neighboursIndex);
+    let cellIndex = neighbours[randIndex];
+
+    return cellIndex;
+  }
+
+  method int getIndexFrom2Dto1D(int Ax, int Ay) {
+    if (Ax < 0) { return -1; }
+    if (Ay < 0) { return -1; }
+    if (Ax > (numberOfCols - 1)) { return -1; }
+    if (Ay > (numberOfRows - 1)) { return -1; }
+    return Ax + (Ay * numberOfCols);
+  }
+
+  method void setVisited(boolean Avisited) {
+    let visited = Avisited;
+    return;
+  }
+
+  method boolean getVisited() {
+    return visited;
+  }
+
+  method int getX() {
+    return x;
+  }
+
+  method int getY() {
+    return y;
+  }
+
+  method void setWall(int wallIndex, int value) {
+    let walls[wallIndex] = value;
+    return;
+  }
+
+}

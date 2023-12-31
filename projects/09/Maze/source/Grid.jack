@@ -1,0 +1,55 @@
+class Grid {
+  static int screenHeight;
+  static int screenWeight;
+  field Array grid;
+  field int weight;
+  field int numberOfRows;
+  field int numberOfCols;
+
+  screenHeight = 512;
+  screenHeight = 256;
+
+  constructor Grid new(int Aweight) {
+    let weight = Aweight;
+    let numberOfRows = screenHeight / weight;
+    let numberOfCols = screenWeight / weight;
+
+    let grid = Array.new(numberOfRows * numberOfCols);
+    
+    var int row;
+    let row=0;
+    while (row < numberOfRows) {
+      let col=0;
+      while (col < numberOfCols) {
+        rows[(row * col) + col] = new Cell(row, col, weight)
+        let col = col + 1;
+      }
+      let row = row + 1;
+    }
+  }
+  
+  method void draw() {
+    var int row, col;
+    let row=0;
+    while (row < numberOfRows) {
+      let col=0;
+      while (col < numberOfCols) {
+        rows[(row * col) + col].draw();
+        let col = col + 1;
+      }
+      let row = row + 1;
+    }
+  }
+
+  method void dispose() {
+    var int i;
+    let i = 0;
+    while(numberOfRows * numberOfCols){
+      grid[i].dispose();
+    }
+    grid.dispose();
+    do Memory.deAlloc(this);
+    return;
+  }
+  
+}

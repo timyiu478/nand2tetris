@@ -1,0 +1,38 @@
+class Main {
+   function void main() {
+      var int cellHeight, cellWeight;
+      var int screenHeight, screenWeight;
+      var int seed, keyPressed;
+      var Maze maze;
+      var boolean printedWelcomeMsg;
+
+      let cellHeight = 16;
+      let cellWeight = 32;
+      let screenHeight = 256; 
+      let screenWeight = 512;
+      let maze = Maze.new(screenHeight, screenWeight, cellHeight, cellWeight);
+
+      while (true) {
+        let keyPressed = Keyboard.keyPressed();
+        if (~(printedWelcomeMsg)) {
+          do Output.printString("Welcome to Maze Game!");
+          do Output.println();
+          do Output.printString("You can start generate Maze by pressing any key.");
+          do Output.println();
+          do Output.printString("The Maze will be re-generate after you re-pressing any key.");
+          do Output.println();
+          let printedWelcomeMsg = true;
+        }
+        if (~(keyPressed = 0)) {
+          let seed = seed + keyPressed; 
+          do Random.setSeed(seed);
+          do maze.resetMaze();
+          do maze.draw(keyPressed);
+        }
+        do Sys.wait(500);
+      }
+
+      return;
+   }
+}
+
