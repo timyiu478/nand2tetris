@@ -8,4 +8,4 @@
 
 ## DEMO
 
-![](Maze/demo.mp4)
+![](https://github.com/timyiu478/nand2tetris/blob/main/projects/09/Maze/demo.mp4)
