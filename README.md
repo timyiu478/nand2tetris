@@ -1,5 +1,7 @@
 # Nand2Tetris
 
+Nand2Tetris is an educational journey where you build a computer from scratch, starting with a simple NAND gate and progressing to a fully functional system. It covers everything from hardware architecture to software development in an approachable, hands-on way.
+
 ## Projects
 
 ### Hardware Platform
