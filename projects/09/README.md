@@ -8,4 +8,4 @@
 
 ## DEMO
 
-[![](assets/maze_demo.png)](https://github.com/timyiu478/nand2tetris/blob/main/projects/09/Maze/demo.mp4)
+https://github.com/user-attachments/assets/aa8fc16b-a2ba-4662-bd0d-d4874dafdf51
